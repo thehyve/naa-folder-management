@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/repos/pfizer_2_0/!svn/ver/4/folder-management-plugin
+END
+application.properties
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/application.properties
+END
+.gitignore
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/.gitignore
+END
+README.md
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/README.md
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/.project
+END
+plugin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/plugin.xml
+END
+FolderManagementGrailsPlugin.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/FolderManagementGrailsPlugin.groovy
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/.classpath
+END
+System.out
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/System.out
+END

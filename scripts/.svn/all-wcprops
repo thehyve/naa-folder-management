@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/scripts
+END
+_Install.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/scripts/_Install.groovy
+END
+_Events.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/scripts/_Events.groovy
+END
+_Uninstall.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/scripts/_Uninstall.groovy
+END
+_Upgrade.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/scripts/_Upgrade.groovy
+END

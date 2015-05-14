@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/fm
+END
+FmFolderAssociation.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/fm/FmFolderAssociation.groovy
+END
+FmFolder.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/repos/pfizer_2_0/!svn/ver/31/folder-management-plugin/grails-app/domain/fm/FmFolder.groovy
+END
+FmFile.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/repos/pfizer_2_0/!svn/ver/31/folder-management-plugin/grails-app/domain/fm/FmFile.groovy
+END
+FmData.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/fm/FmData.groovy
+END

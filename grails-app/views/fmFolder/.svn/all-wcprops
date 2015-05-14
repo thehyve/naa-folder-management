@@ -1,0 +1,191 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder
+END
+_fileMetadata.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_fileMetadata.gsp
+END
+_createStudy.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_createStudy.gsp
+END
+_metaData.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_metaData.gsp
+END
+_selectMeasurements.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_selectMeasurements.gsp
+END
+_filesTable.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_filesTable.gsp
+END
+_noResults.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_noResults.gsp
+END
+_programTarget.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_programTarget.gsp
+END
+editMetaData.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/editMetaData.gsp
+END
+_extTagSearchField.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_extTagSearchField.gsp
+END
+create.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/create.gsp
+END
+show.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/show.gsp
+END
+_folderDetail.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_folderDetail.gsp
+END
+_bioAssayPlatform.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_bioAssayPlatform.gsp
+END
+_selectPlatforms.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_selectPlatforms.gsp
+END
+_folders.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_folders.gsp
+END
+edit.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/edit.gsp
+END
+_folderList.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_folderList.gsp
+END
+_selectVendors.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_selectVendors.gsp
+END
+_exportCart.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_exportCart.gsp
+END
+_bioCompound.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_bioCompound.gsp
+END
+_createAnalysis.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_createAnalysis.gsp
+END
+_editMetaData.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_editMetaData.gsp
+END
+_extBusinessObjSearch.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_extBusinessObjSearch.gsp
+END
+_createAssay.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_createAssay.gsp
+END
+list.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/list.gsp
+END
+_bioMarker.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_bioMarker.gsp
+END
+_selectTechnologies.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_selectTechnologies.gsp
+END
+_deletedFolder.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_deletedFolder.gsp
+END
+_extMultiBusinessObjSearch.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_extMultiBusinessObjSearch.gsp
+END
+_createFolder.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_createFolder.gsp
+END
+_createProgram.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/views/fmFolder/_createProgram.gsp
+END

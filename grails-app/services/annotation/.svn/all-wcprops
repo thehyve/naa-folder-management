@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/services/annotation
+END
+MetaDataService.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/services/annotation/MetaDataService.groovy
+END
+AmTagItemService.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/services/annotation/AmTagItemService.groovy
+END
+AmTagTemplateService.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/services/annotation/AmTagTemplateService.groovy
+END

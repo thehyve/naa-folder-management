@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation
+END
+AmTagTemplate2.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmTagTemplate2.groovy
+END
+AmTagTemplateAssociation.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmTagTemplateAssociation.groovy
+END
+AmTagTemplate.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmTagTemplate.groovy
+END
+AmData.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmData.groovy
+END
+AmTagAssociation.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmTagAssociation.groovy
+END
+AmTagValue.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmTagValue.groovy
+END
+AmTagItem.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmTagItem.groovy
+END
+AmTagDisplayValue.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/grails-app/domain/annotation/AmTagDisplayValue.groovy
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/web-app/WEB-INF/tld
+END
+c.tld
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/web-app/WEB-INF/tld/c.tld
+END
+grails.tld
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/web-app/WEB-INF/tld/grails.tld
+END
+fmt.tld
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/web-app/WEB-INF/tld/fmt.tld
+END
+spring.tld
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/repos/pfizer_2_0/!svn/ver/5/folder-management-plugin/web-app/WEB-INF/tld/spring.tld
+END
