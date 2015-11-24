@@ -57,6 +57,7 @@
 #cartbutton {
     position: relative;
     padding: 0px 4px;
+    font-size: 10px;
 }
 
 #cartcount {
