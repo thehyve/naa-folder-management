@@ -43,7 +43,7 @@ class AmTagItem implements Comparable<AmTagItem> {
 //	AmTagAssociation amTagAssociation
 
     static mapping = {
-        table 'am_tag_item'
+        table schema: 'amapp'
         version false
         cache true
         sort "displayOrder"

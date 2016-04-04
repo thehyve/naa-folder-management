@@ -27,7 +27,7 @@ class AmTagTemplateAssociation {
     String objectUid
 
     static mapping = {
-        table 'am_tag_template_association'
+        table schema: 'amapp'
         version false
         cache true
         sort "value"

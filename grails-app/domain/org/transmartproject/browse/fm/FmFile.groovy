@@ -28,7 +28,7 @@ class FmFile {
     static transients = ['folder', 'uniqueId']
 
     static mapping = {
-        table 'fm_file'
+        table schema: 'fmapp'
         version false
         cache true
         sort "displayName"

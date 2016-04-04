@@ -23,7 +23,7 @@ class FmFolder implements Buildable {
     static transients = ['uniqueId', 'pluralFolderTypeName']
 
     static mapping = {
-        table 'fm_folder'
+        table schema: 'fmapp'
         version false
         sort "folderName"
         id column: 'folder_id', generator: 'sequence', params: [sequence: 'seq_fm_id']

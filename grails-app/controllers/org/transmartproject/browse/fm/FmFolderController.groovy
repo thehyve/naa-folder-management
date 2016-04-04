@@ -9,6 +9,9 @@ import com.recomdata.export.ExportRowNew
 import com.recomdata.export.ExportTableNew
 import com.recomdata.util.FolderType
 import de.DeMrnaAnnotation
+import org.transmart.biomart.BioAssayAnalysis
+import org.transmart.biomart.Experiment
+import org.transmart.mongo.MongoUtils
 import grails.converters.JSON
 import grails.converters.XML
 import grails.validation.ValidationException
@@ -1307,7 +1310,7 @@ class FmFolderController {
             file.newInputStream().withStream {
                 response.outputStream << it
             }
-            }
+                }
 
     def ajaxTechnologies =
             {

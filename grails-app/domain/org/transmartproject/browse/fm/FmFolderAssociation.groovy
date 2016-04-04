@@ -11,7 +11,7 @@ class FmFolderAssociation implements Serializable {
     FmFolder fmFolder
 
     static mapping = {
-        table 'fm_folder_association'
+        table schema: 'fmapp'
         version false
         cache true
         sort "objectUid"
