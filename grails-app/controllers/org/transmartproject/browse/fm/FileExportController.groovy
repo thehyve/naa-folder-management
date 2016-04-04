@@ -1,4 +1,4 @@
-package fm
+package org.transmartproject.browse.fm
 
 import annotation.AmTagAssociation
 import annotation.AmTagTemplate
@@ -8,7 +8,7 @@ import org.transmart.biomart.BioData
 import org.transmart.biomart.ConceptCode
 import org.transmart.biomart.Experiment
 import org.transmart.searchapp.SearchKeyword
-import i2b2.OntNode
+import org.transmart.mongo.MongoUtils
 
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -112,7 +112,7 @@ class FileExportController {
                     //Lose the first separator character, this would cause a blank folder name in the zip
                     def fileEntry = new ZipEntry(dirName + "/" + fmFolderService.safeFileName(exportName))
                     zipStream.putNextEntry(fileEntry)
-                    file.withInputStream({ is -> zipStream << is })
+                            file.withInputStream({ is -> zipStream << is })
                     zipStream.closeEntry()
 
                     //For manifest files, add this file to a map, keyed by folder names.

@@ -1,4 +1,4 @@
-package fm
+package org.transmartproject.browse.fm
 
 import annotation.AmTagDisplayValue
 import annotation.AmTagItem
@@ -14,13 +14,11 @@ import grails.converters.XML
 import grails.validation.ValidationException
 import groovy.xml.StreamingMarkupBuilder
 import org.apache.commons.lang.StringUtils
-import org.transmart.biomart.*
 import org.transmart.searchapp.AuthUser
 import org.transmart.searchapp.SearchKeyword
 import org.slf4j.LoggerFactory
 import i2b2.OntNode;
 
-import javax.activation.MimetypesFileTypeMap
 
 class FmFolderController {
 
@@ -72,16 +70,16 @@ class FmFolderController {
     public String serializeFoldersToXMLFile() {
         def writer = new FileWriter("c:\\temp\\SerializedAsXML.xml")
 
-//		List<FmFolder> folderList = FmFolder.list()
+//      List<FmFolder> folderList = FmFolder.list()
         def fmFolderInstance = FmFolder.get(8)
 
 
         def builder = new StreamingMarkupBuilder().bind {
-            //	mkp.xmlDeclaration()
+//          mkp.xmlDeclaration()
             unescaped << '<fmFolders>'
-//		folderList.each {folder ->
+//          folderList.each {folder ->
             out << fmFolderInstance
-//		}
+//          }
             unescaped << '</fmFolders>'
         }
         writer << builder
@@ -804,9 +802,9 @@ class FmFolderController {
                             if (dataObject.hasProperty(amTagItem.tagItemAttr)) {
                                 //log.info ("CREATEDATATABLE::FIXED COLUMNS == " + amTagItem.tagItemAttr + " " + amTagItem.displayName)
                                 table.putColumn(amTagItem.id.toString(), new ExportColumn(amTagItem.id.toString(), amTagItem.displayName, "", 'String'));
-                            } else {
+							} else {
                                 log.error("CREATEDATATABLE::TAG ITEM ID = " + amTagItem.id + " COLUMN " + amTagItem.tagItemAttr + " is not a propery of " + dataObject)
-                            }
+							}
 
                         } else if (amTagItem.tagItemType == 'CUSTOM') {
                             log.info("CREATEDATATABLE::CUSTOM == " + amTagItem.tagItemType + " ID = " + amTagItem.id + " " + amTagItem.displayName)
@@ -855,22 +853,22 @@ class FmFolderController {
 
                         log.info("ROWS == " + amTagItem.tagItemAttr + " " + bioDataObject[amTagItem.tagItemAttr])
                         newrow.put(amTagItem.id.toString(), bioDataDisplayValue ? bioDataDisplayValue : '');
-                    } else if (amTagItem.tagItemType == 'CUSTOM') {
+                    } else if (amTagItem.tagItemType == 'CUSTOM') {              
                         def tagValues = AmTagDisplayValue.findAll('from AmTagDisplayValue a where a.subjectUid=? and a.amTagItem.id=?', [bioDataObject.getUniqueId().toString(), amTagItem.id])
                         log.info("CUSTOM PARAMETERS " + bioDataObject.getUniqueId() + " " + amTagItem.id + " tagValues " + tagValues)
-                        newrow.put(amTagItem.id.toString(), createDisplayString(tagValues));
+						newrow.put(amTagItem.id.toString(), createDisplayString(tagValues));
                     } else {
-                        def tagValues = AmTagDisplayValue.findAllDisplayValue(folderObject.uniqueId, amTagItem.id)
-                        log.info("BIOOBJECT PARAMETERS " + folderObject.uniqueId + " " + amTagItem.id + " tagValues " + tagValues)
+							def tagValues = AmTagDisplayValue.findAllDisplayValue(folderObject.uniqueId, amTagItem.id)
+							log.info("BIOOBJECT PARAMETERS " + folderObject.uniqueId + " " + amTagItem.id + " tagValues " + tagValues)
 
-                        newrow.put(amTagItem.id.toString(), createDisplayString(tagValues));
-                    }
+							newrow.put(amTagItem.id.toString(), createDisplayString(tagValues));
+                        }
 
-                }
-            }
+                    } 
+            	}
 
             table.putRow(bioDataObject.id.toString(), newrow);
-        }
+            } 
 
         return table.toJSON_DataTables("", folderType).toString(5);
     }
@@ -953,7 +951,7 @@ class FmFolderController {
                         def subFoldersAccessLevelMap = fmFolderService.getAccessLevelInfoForFolders(user, subFolders)
                         String gridTitle = "Associated " + StringUtils.capitalize(subFolders[0].pluralFolderTypeName.toLowerCase())
                         String gridData = createDataTable(subFoldersAccessLevelMap, gridTitle)
-                        //	log.info gridData
+                        //         log.info gridData
                         jSONForGrids.add(gridData)
                         log.debug "ADDING JSON GRID"
                     }
@@ -1109,42 +1107,42 @@ class FmFolderController {
 
     def editMetaData =
             {
-                log.info "editMetaData called"
-                log.info "params = " + params
+        log.info "editMetaData called"
+        log.info "params = " + params
 
 
-                if (!isAdmin()) {
-                    return
-                };
+        if (!isAdmin()) {
+            return
+        };
 
                 //log.info "** action: expDetail called!"
-                def folderId = params.folderId
+        def folderId = params.folderId
 
-                def folder
-                def bioDataObject
-                def amTagTemplate
-                def metaDataTagItems
-                if (folderId) {
-                    folder = FmFolder.get(folderId)
-                    if (folder) {
-                        bioDataObject = getBioDataObject(folder)
-                        metaDataTagItems = getMetaDataItems(folder, true)
-                    } else {
-                        log.error "Unable to find folder for folder Id = " + folderId
-                    }
+        def folder
+        def bioDataObject
+        def amTagTemplate
+        def metaDataTagItems
+        if (folderId) {
+            folder = FmFolder.get(folderId)
+            if (folder) {
+                bioDataObject = getBioDataObject(folder)
+                metaDataTagItems = getMetaDataItems(folder, true)
+            } else {
+                log.error "Unable to find folder for folder Id = " + folderId
+            }
 
-                }
+        }
 
-                def title = "Edit Meta Data"
-                def templateType = "editMetadataForm"
+        def title = "Edit Meta Data"
+        def templateType = "editMetadataForm"
 
-                def measurements = BioAssayPlatform.executeQuery("SELECT DISTINCT platformType FROM BioAssayPlatform as p ORDER BY p.platformType")
-                def vendors = BioAssayPlatform.executeQuery("SELECT DISTINCT vendor FROM BioAssayPlatform as p ORDER BY p.vendor")
-                def technologies = BioAssayPlatform.executeQuery("SELECT DISTINCT platformTechnology FROM BioAssayPlatform as p ORDER BY p.platformTechnology")
-                def platforms = BioAssayPlatform.executeQuery("FROM BioAssayPlatform as p ORDER BY p.name")
+        def measurements = BioAssayPlatform.executeQuery("SELECT DISTINCT platformType FROM BioAssayPlatform as p ORDER BY p.platformType")
+        def vendors = BioAssayPlatform.executeQuery("SELECT DISTINCT vendor FROM BioAssayPlatform as p ORDER BY p.vendor")
+        def technologies = BioAssayPlatform.executeQuery("SELECT DISTINCT platformTechnology FROM BioAssayPlatform as p ORDER BY p.platformTechnology")
+        def platforms = BioAssayPlatform.executeQuery("FROM BioAssayPlatform as p ORDER BY p.name")
 
                 render(template: "editMetaData", model: [bioDataObject: bioDataObject, measurements: measurements, technologies: technologies, vendors: vendors, platforms: platforms, folder: folder, amTagTemplate: amTagTemplate, metaDataTagItems: metaDataTagItems]);
-            }
+    }
 
     def updateMetaData = {
         log.info "updateMetaData called"
@@ -1196,32 +1194,32 @@ class FmFolderController {
 
     def subFolders =
             {
-                ExportTableNew table;
+        ExportTableNew table;
 
-                //Keep this if you want to cache the grid data
-                //ExportTableNew table=(ExportTableNew)request.getSession().getAttribute("gridtable");
+        //Keep this if you want to cache the grid data
+        //ExportTableNew table=(ExportTableNew)request.getSession().getAttribute("gridtable");
 
-                if (table == null) {
-                    table = new ExportTableNew();
-                }
+        if (table == null) {
+            table = new ExportTableNew();
+        }
 
-                table.putColumn("ident", new ExportColumn("ident", "ID", "", "String", 50));
-                table.putColumn("name", new ExportColumn("name", "Name", "", "String", 50));
-                table.putColumn("description", new ExportColumn("description", "Description", "", "String", 50));
+        table.putColumn("ident", new ExportColumn("ident", "ID", "", "String", 50));
+        table.putColumn("name", new ExportColumn("name", "Name", "", "String", 50));
+        table.putColumn("description", new ExportColumn("description", "Description", "", "String", 50));
 
-                ExportRowNew newrow = new ExportRowNew();
-                newrow.put("ident", "foo.id");
-                newrow.put("name", "foo.name");
-                newrow.put("description", "foo.description");
-                table.putRow("somerow", newrow);
+        ExportRowNew newrow = new ExportRowNew();
+        newrow.put("ident", "foo.id");
+        newrow.put("name", "foo.name");
+        newrow.put("description", "foo.description");
+        table.putRow("somerow", newrow);
 
-                def jSONToReturn = table.toJSON_DataTables("").toString(5);
+        def jSONToReturn = table.toJSON_DataTables("").toString(5);
 
-                request.getSession().setAttribute("gridtable", table);
+        request.getSession().setAttribute("gridtable", table);
 
-                [jSONForGrid: jSONToReturn]
+        [jSONForGrid: jSONToReturn]
 
-            }
+    }
 
     /**
      * Calls service to import files into tranSMART filestore and index them with SOLR
@@ -1305,88 +1303,88 @@ class FmFolderController {
                             '%' + String.format('%02x', it)
                         }.join('')
         response.addHeader 'Content-length', fmFile.fileSize.toString()
-        def file = fmFolderService.getFile fmFile
-        file.newInputStream().withStream {
-            response.outputStream << it
-        }
-    }
+            def file = fmFolderService.getFile fmFile
+            file.newInputStream().withStream {
+                response.outputStream << it
+            }
+            }
 
     def ajaxTechnologies =
             {
-                def queryString = " where 1=1"
-                if (params.measurementName != null && params.measurementName != 'null') {
-                    queryString += " and platformType = '" + params.measurementName + "'"
-                }
-                if (params.vendorName != null && params.vendorName != 'null') {
-                    queryString += " and vendor = '" + params.vendorName + "'"
-                }
+        def queryString = " where 1=1"
+        if (params.measurementName != null && params.measurementName != 'null') {
+            queryString += " and platformType = '" + params.measurementName + "'"
+        }
+        if (params.vendorName != null && params.vendorName != 'null') {
+            queryString += " and vendor = '" + params.vendorName + "'"
+        }
 
-                queryString = "SELECT DISTINCT platformTechnology FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.platformTechnology"
-                def technologies = BioAssayPlatform.executeQuery(queryString)
-                log.info queryString + " " + technologies
+        queryString = "SELECT DISTINCT platformTechnology FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.platformTechnology"
+        def technologies = BioAssayPlatform.executeQuery(queryString)
+        log.info queryString + " " + technologies
                 render(template: "selectTechnologies", model: [technologies: technologies, technology: params.technologyName])
-            }
+    }
 
     def ajaxVendors =
             {
-                log.info params
-                def queryString = " where 1=1"
+        log.info params
+        def queryString = " where 1=1"
 
-                if (params.technologyName != null && params.technologyName != 'null') {
-                    queryString += " and platformTechnology = '" + params.technologyName + "'"
-                }
+        if (params.technologyName != null && params.technologyName != 'null') {
+            queryString += " and platformTechnology = '" + params.technologyName + "'"
+        }
 
-                if (params.measurementName != null && params.measurementName != 'null') {
-                    queryString += " and platformType = '" + params.measurementName + "'"
-                }
+        if (params.measurementName != null && params.measurementName != 'null') {
+            queryString += " and platformType = '" + params.measurementName + "'"
+        }
 
-                queryString = "SELECT DISTINCT vendor FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.vendor"
-                def vendors = BioAssayPlatform.executeQuery(queryString)
-                log.info queryString + " " + vendors
+        queryString = "SELECT DISTINCT vendor FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.vendor"
+        def vendors = BioAssayPlatform.executeQuery(queryString)
+        log.info queryString + " " + vendors
                 render(template: "selectVendors", model: [vendors: vendors, vendor: params.vendorName])
-            }
+    }
 
     def ajaxMeasurements =
             {
-                log.info params
-                def queryString = " where 1=1"
+        log.info params
+        def queryString = " where 1=1"
 
-                if (params.technologyName != null && params.technologyName != 'null') {
-                    queryString += " and platformTechnology = '" + params.technologyName + "'"
-                }
+        if (params.technologyName != null && params.technologyName != 'null') {
+            queryString += " and platformTechnology = '" + params.technologyName + "'"
+        }
 
-                if (params.vendorName != null && params.vendorName != 'null') {
-                    queryString += " and vendor = '" + params.vendorName + "'"
-                }
+        if (params.vendorName != null && params.vendorName != 'null') {
+            queryString += " and vendor = '" + params.vendorName + "'"
+        }
 
-                queryString = "SELECT DISTINCT platformType FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.platformType"
-                def measurements = BioAssayPlatform.executeQuery(queryString)
-                log.info queryString + " " + measurements
+        queryString = "SELECT DISTINCT platformType FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.platformType"
+        def measurements = BioAssayPlatform.executeQuery(queryString)
+        log.info queryString + " " + measurements
                 render(template: "selectMeasurements", model: [measurements: measurements, measurement: params.measurementName])
-            }
+    }
 
     def ajaxPlatforms =
             {
-                log.info params
-                def queryString = " where 1=1"
+        log.info params
+        def queryString = " where 1=1"
 
-                if (params.measurementName != null && params.measurementName != 'null') {
-                    queryString += " and platformType = '" + params.measurementName + "'"
-                }
+        if (params.measurementName != null && params.measurementName != 'null') {
+            queryString += " and platformType = '" + params.measurementName + "'"
+        }
 
-                if (params.technologyName != null && params.technologyName != 'null') {
-                    queryString += " and platformTechnology = '" + params.technologyName + "'"
-                }
+        if (params.technologyName != null && params.technologyName != 'null') {
+            queryString += " and platformTechnology = '" + params.technologyName + "'"
+        }
 
-                if (params.vendorName != null && params.vendorName != 'null') {
-                    queryString += " and vendor = '" + params.vendorName + "'"
-                }
+        if (params.vendorName != null && params.vendorName != 'null') {
+            queryString += " and vendor = '" + params.vendorName + "'"
+        }
 
-                queryString = "FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.platformType"
-                def platforms = BioAssayPlatform.executeQuery(queryString)
-                log.info queryString + " " + platforms
+        queryString = "FROM BioAssayPlatform as p " + queryString + "  ORDER BY p.platformType"
+        def platforms = BioAssayPlatform.executeQuery(queryString)
+        log.info queryString + " " + platforms
                 render(template: "selectPlatforms", model: [platforms: platforms])
-            }
+    }
 
     private boolean isAdmin() {
         if ("anonymousUser" != springSecurityService.getPrincipal()) {
@@ -1408,12 +1406,12 @@ class FmFolderController {
         def paramMap = params
         def experiment = null
 		
-		if (params.id) {
-			experiment = Experiment.get(params.id)
+        if (params.id) {
+            experiment = Experiment.get(params.id)
 		}
 		else if (params.accession) {
-			experiment = Experiment.findByAccession(params.accession)
-		}
+            experiment = Experiment.findByAccession(params.accession)
+        }
 		
 		if (experiment == null) {
 			OntNode ont = OntNode.findByName(params.accession)
@@ -1435,7 +1433,7 @@ class FmFolderController {
             render(template: 'filesTable', model: [folder: folder], plugin: 'folderManagement')
         }
     }
-	
+
 	def getFolderHasFiles = {
 		def paramMap = params
 		def experiment = null

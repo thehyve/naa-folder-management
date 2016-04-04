@@ -20,7 +20,7 @@
 
 package annotation
 
-import fm.FmFolder
+import org.transmartproject.browse.fm.FmFolder
 
 class AmTagItemService {
 

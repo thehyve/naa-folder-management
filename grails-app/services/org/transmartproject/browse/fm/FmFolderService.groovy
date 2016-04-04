@@ -1,4 +1,4 @@
-package fm
+package org.transmartproject.browse.fm
 
 import java.io.File;
 
@@ -8,14 +8,23 @@ import com.recomdata.util.FolderType
 
 import grails.util.Holders
 import grails.validation.ValidationException
-
-import org.apache.commons.io.FileUtils
-import org.apache.commons.io.FilenameUtils
-import org.apache.solr.util.SimplePostTool
 import org.transmart.biomart.BioData
 import org.transmart.biomart.Experiment
 import org.transmart.searchapp.AccessLog
 import org.transmart.searchapp.AuthUser
+
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.FilenameUtils
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.InputStreamBody
+import groovyx.net.http.ContentType;
+import groovyx.net.http.HTTPBuilder;
+import groovyx.net.http.Method
+import com.mongodb.DB
+import com.mongodb.MongoClient;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile
 
 class FmFolderService {
 
@@ -32,6 +41,7 @@ class FmFolderService {
     def amTagItemService
     def springSecurityService
     def i2b2HelperService
+    def facetsIndexingService
 
     private String getSolrUrl() {
         solrBaseUrl + '/update'
@@ -313,45 +323,62 @@ class FmFolderService {
     private void indexFile(FmFile fmFile) {
 
         try {
+            facetsIndexingService.indexByIds([this.getClass()
+                    .classLoader.loadClass('org.transmartproject.search.indexing.FacetsDocId')
+                    .newInstance('FILE', fmFile.id)] as Set)
 
-            /*
-             * Create the file entry first - the POST will handle the content.
-             */
-            String xmlString = "<add><doc><field name='id'>" + fmFile.getUniqueId() + "</field><field name='folder'>" + fmFile.folder.getUniqueId() + "</field><field name='name'>" + fmFile.originalName + "</field></doc></add>"
-            xmlString = URLEncoder.encode(xmlString, "UTF-8");
-            StringBuilder url = new StringBuilder(solrUrl);
-            url.append("?stream.body=").append(xmlString).append("&commit=true")
-            URL updateUrl = new URL(url.toString())
-            HttpURLConnection urlc = (HttpURLConnection) updateUrl.openConnection();
-            if (HttpURLConnection.HTTP_OK != urlc.getResponseCode()) {
-                log.warn("The SOLR service returned an error #" + urlc.getResponseCode() + " " + urlc.getResponseMessage() + " for url " + updateUrl);
-            } else {
-                log.debug("Pre-created record for " + fmFile.getUniqueId());
+            if (useMongo) {
+                if(config.transmartproject.mongoFiles.useDriver){
+                    MongoClient mongo = new MongoClient(config.transmartproject.mongoFiles.dbServer, config.transmartproject.mongoFiles.dbPort)
+                    DB db = mongo.getDB(config.transmartproject.mongoFiles.dbName)
+                    GridFS gfs = new GridFS(db)
+                    def http = new HTTPBuilder(url)
+                    GridFSDBFile gfsFile = gfs.findOne(fmFile.filestoreName)
+                    http.request(Method.POST) {request ->
+                        requestContentType: "multipart/form-data"
+                        MultipartEntity multiPartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                        multiPartContent.addPart(fmFile.filestoreName, new InputStreamBody(gfsFile.getInputStream(), "application/octet-stream", fmFile.originalName))
+                        request.setEntity(multiPartContent)
+                        response.success = { resp ->
+                            log.info("File successfully indexed: "+fmFile.id)
+                        }
+                        response.failure = { resp ->
+                            log.error("Problem to index file "+fmFile.id+": "+resp.status)
+                        }
+                    }
+                    mongo.close()
+                }else{
+                    def apiURL=config.transmartproject.mongoFiles.apiURL
+                    def apiKey=config.transmartproject.mongoFiles.apiKey
+                    def http = new HTTPBuilder(apiURL+fmFile.filestoreName+"/fsfile")
+                    url.append("&commit=true")
+                    http.request( Method.GET, ContentType.BINARY) { req ->
+                        headers.'apikey' = MongoUtils.hash(apiKey)
+                        response.success = { resp, binary ->
+                            assert resp.statusLine.statusCode == 200
+                            def inputStream=binary
+
+                            def http2 = new HTTPBuilder(url)
+                            http2.request(Method.POST) {request ->
+                                requestContentType: "multipart/form-data"
+                                MultipartEntity multiPartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                                multiPartContent.addPart(fmFile.filestoreName, new InputStreamBody(inputStream, "application/octet-stream", fmFile.originalName))
+                                request.setEntity(multiPartContent)
+                                response.success = { resp2 ->
+                                    log.info("File successfully indexed: "+fmFile.id)
+                                }
+
+                                response.failure = { resp2 ->
+                                    log.error("Problem to index file "+fmFile.id+": "+resp.status)
+                                }
+                            }
+                        }
+                        response.failure = { resp ->
+                            log.error("Problem during connection to API: "+resp.status)
+                        }
+                    }
+                }
             }
-
-            /*
-             * POST the file - if it has readable content, the contents will be indexed.
-             */
-            url = new StringBuilder(solrUrl);
-            // Use the file's unique ID as the document ID in SOLR
-            url.append("?").append("literal.id=").append(URLEncoder.encode(fmFile.getUniqueId(), "UTF-8"));
-
-            // Use the file's parent folder's unique ID as the folder_uid in SOLR
-            if (fmFile.folder != null) {
-                url.append("&").append("literal.folder=").append(URLEncoder.encode(fmFile.folder.getUniqueId(), "UTF-8"));
-            }
-
-            // Use the file's name as document name is SOLR
-            url.append("&").append("literal.name=").append(URLEncoder.encode(fmFile.originalName, "UTF-8"));
-
-            // Get path to actual file in filestore.
-            String[] args = [filestoreDirectory + File.separator + fmFile.filestoreLocation + File.separator + fmFile.filestoreName] as String[];
-
-            // Use SOLR SimplePostTool to manage call to SOLR service.
-            SimplePostTool postTool = new SimplePostTool(SimplePostTool.DATA_MODE_FILES, new URL(url.toString()), true,
-                    null, 0, 0, fileTypes, System.out, true, true, args);
-
-            postTool.execute();
         } catch (Exception ex) {
             log.error("Exception while indexing fmFile with id of " + fmFile.id, ex);
         }
@@ -411,19 +438,19 @@ class FmFolderService {
 
     def deleteFile(FmFile file) {
         try {
-            File filestoreFile = getFile(file)
-            if (filestoreFile.exists()) {
-                filestoreFile.delete()
-            }
-            removeSolrEntry(file.getUniqueId())
-            def data = FmData.get(file.id)
-            if (data) {
-                data.delete(flush: true)
-            }
-            file.folder.fmFiles.remove(file)
-            file.folder.save(flush: true)
-            def al = new AccessLog(username: springSecurityService.getPrincipal().username, event: "Browse-Delete file", eventmessage: file.displayName + " (" + file.getUniqueId() + ")", accesstime: new java.util.Date())
-            al.save()
+                File filestoreFile = getFile(file)
+                if (filestoreFile.exists()) {
+                    filestoreFile.delete()
+                }
+                removeSolrEntry(file.getUniqueId())
+                def data = FmData.get(file.id)
+                if (data) {
+                    data.delete(flush: true)
+                }
+                file.folder.fmFiles.remove(file)
+                file.folder.save(flush: true)
+                def al = new AccessLog(username: springSecurityService.getPrincipal().username, event: "Browse-Delete file", eventmessage: file.displayName + " (" + file.getUniqueId() + ")", accesstime: new java.util.Date())
+                al.save()
         }
         catch (Exception ex) {
             System.out.println("Exception while deleting file with uid of " + file.getUniqueId(), ex);

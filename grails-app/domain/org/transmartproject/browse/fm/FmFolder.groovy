@@ -1,4 +1,4 @@
-package fm
+package org.transmartproject.browse.fm
 
 import com.recomdata.util.FolderType
 
