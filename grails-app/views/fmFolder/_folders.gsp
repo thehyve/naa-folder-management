@@ -7,6 +7,13 @@
 <g:set var="ontologyService" bean="ontologyService"/>
 <g:set var="fmFolderService" bean="fmFolderService"/>
 <g:set var="ts" value="${Calendar.instance.time.time}"/>
+<g:if test="${!!folderSearchString}">
+	<g:set var="passAlongSearchFolder"
+		   value="&folderSearch=${URLEncoder.encode(folderSearchString, 'UTF-8')}&uniqueLeaves=${URLEncoder.encode(uniqueLeavesString, 'UTF-8')}" />
+</g:if>
+<g:else>
+	<g:set var="passAlongSearchFolder" value="" />
+</g:else>
 
 <script type="text/javascript">
 	var resultNumber = '${resultNumber}';
@@ -25,8 +32,14 @@
 						</g:if>
 						<span>
 							<g:if test="${folder.hasChildren()}">
-								<a id="toggleDetail_${folder.id}" href="#" onclick="toggleDetailDiv('${folder.id}', folderContentsURL + '?id=${folder.id}&auto=false');">
-									<img alt="expand/collapse" id="imgExpand_${folder.id}" src="${resource(dir:'images',file:'folderplus.png')}" />
+								<g:set var="toggleJsFunc" value="${folderAccessLevel == 'LOCKED' ? "alert('$restrictedAccessMessage')"
+										: "toggleDetailDiv('${folder.id}', folderContentsURL + '?id=${folder.id}&auto=false${passAlongSearchFolder}', false, false, true);"}" />
+
+								<a id="toggleDetail_${folder.id}" href="#"
+								   onclick="${toggleJsFunc}">
+									<img alt="expand/collapse"
+										 id="imgExpand_${folder.id}"
+										 src="${resource(dir: 'images', file: 'folderplus.png')}"/>
 									<span class="foldericon ${folderIconType}"></span>
 								</a>
 							</g:if>
@@ -51,9 +64,15 @@
 					<g:if test="${folderSearchString?.indexOf(folder.folderFullName) > -1}">
 					<%-- Auto-expand this folder as long as it isn't a unique leaf. --%>
 					<g:if test="${(uniqueLeavesString?.indexOf(folder.folderFullName + ',') == -1)}">
-							<script>toggleDetailDiv('${folder.id}', folderContentsURL + '?id=${folder.id}&auto=true');</script>
+							<script>toggleDetailDiv('${folder.id}', folderContentsURL + '?id=${folder.id}&auto=true${passAlongSearchFolder}');</script>
 						</g:if>
+						<g:elseif test="${nodesToExpand.grep(folder.uniqueId)}">
+							<script>toggleDetailDiv('${folder.id}', folderContentsURL + '?id=${folder.id}&auto=true${passAlongSearchFolder}', true, false);</script>
+						</g:elseif>
 					</g:if>
+					<g:elseif test="${nodesToExpand.grep(folder.uniqueId)}">
+						<script>toggleDetailDiv('${folder.id}', folderContentsURL + '?id=${folder.id}&auto=true${passAlongSearchFolder}', true, false);</script>
+					</g:elseif>
 
 				<g:set var="files" value="${folder.fmFiles}"/>
 

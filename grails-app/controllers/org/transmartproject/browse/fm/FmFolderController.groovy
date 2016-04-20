@@ -597,23 +597,25 @@ class FmFolderController {
             id = FmFolder.findByUniqueId(params.uid).id
         }
         def auto = params.boolean('auto')
+
+        def folderSearchList = params.get('folderSearch')?.split(/,/)?.findAll()
+        def uniqueLeavesList = params.get('uniqueLeaves')?.split(/,/)?.findAll()
+
+
         //Flag for whether folder was automatically opened - if not, then it shouldn't respect the folder mask
         def user = AuthUser.findByUsername(springSecurityService.getPrincipal().username)
         def folderContentsAccessLevelMap = fmFolderService.getFolderContentsWithAccessLevelInfo(user, id)
-        def folderContents = new ArrayList(folderContentsAccessLevelMap.keySet())
-        def folderSearchLists = session['folderSearchList']
-        if (!folderSearchLists) {
-            folderSearchLists = [[], []]
-        }
-        def folderSearchString = folderSearchLists[0] ? folderSearchLists[0].join(",") + "," : ""
+        List<FmFolder> folderContents = folderContentsAccessLevelMap.keySet() as List
+
+        def folderSearchString = folderSearchList ? folderSearchList.join(",") + "," : ""
         //Extra , - used to identify leaves
-        def uniqueLeavesString = folderSearchLists[1] ? folderSearchLists[1].join(",") + "," : ""
-        def nodesToExpand = session['rwgOpenedNodes']
+        def uniqueLeavesString = uniqueLeavesList ? uniqueLeavesList.join(",") + "," : ""
+
         //check that all folders from folderContents are in the search path, or children of nodes in the search path
-        if (folderSearchLists[0].size() > 0) {
+        if (folderSearchList?.size() > 0) {
             for (def folder : folderContents) {
                 boolean found = false
-                for (String path : folderSearchLists[0]) {
+                for (String path : folderSearchList) {
                     if (path.indexOf(folder.folderFullName) > -1 || folder.folderFullName.indexOf(path) > -1) {
                         found = true
                         break
@@ -625,23 +627,16 @@ class FmFolderController {
             }
         }
         def displayMetadata = "";
+
         //if there is an accession in filters, add the study node (there is just one) in the array for nodes to expand
-        if (session['rwgSearchFilter'] != null) {
-            def filters = session['rwgSearchFilter']
-            for (def filter in filters) {
-                if (filter != null && filter.indexOf("|ACCESSION;") > -1) {
-                    for (def folder : folderContents) {
-                        if (folder.folderType == "STUDY") {
-                            if (!nodesToExpand.grep(folder.uniqueId)) {
-                                nodesToExpand += folder.uniqueId
-                                displayMetadata = folder.uniqueId
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        render(template: 'folders', model: [folders: folderContents, folderContentsAccessLevelMap: folderContentsAccessLevelMap, folderSearchString: folderSearchString, uniqueLeavesString: uniqueLeavesString, auto: auto, nodesToExpand: nodesToExpand, displayMetadata: displayMetadata])
+        render template: 'folders',
+                plugin: 'folderManagement',
+                model: [folders: folderContents,
+                        folderContentsAccessLevelMap: folderContentsAccessLevelMap,
+                        folderSearchString: folderSearchString,
+                        uniqueLeavesString: uniqueLeavesString,
+                        auto: auto,
+                        displayMetadata: displayMetadata]
     }
 
     /**
@@ -1310,7 +1305,7 @@ class FmFolderController {
             file.newInputStream().withStream {
                 response.outputStream << it
             }
-                }
+        }
 
     def ajaxTechnologies =
             {
