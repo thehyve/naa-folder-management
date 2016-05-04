@@ -3,12 +3,12 @@ package org.transmartproject.browse.fm
 import annotation.AmTagAssociation
 import annotation.AmTagTemplate
 import annotation.AmTagValue
+import i2b2.OntNode
 import org.transmart.biomart.BioAssayPlatform
 import org.transmart.biomart.BioData
 import org.transmart.biomart.ConceptCode
 import org.transmart.biomart.Experiment
 import org.transmart.searchapp.SearchKeyword
-import org.transmart.mongo.MongoUtils
 
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream

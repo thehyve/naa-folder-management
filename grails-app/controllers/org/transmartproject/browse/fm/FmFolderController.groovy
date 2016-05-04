@@ -9,19 +9,20 @@ import com.recomdata.export.ExportRowNew
 import com.recomdata.export.ExportTableNew
 import com.recomdata.util.FolderType
 import de.DeMrnaAnnotation
-import org.transmart.biomart.BioAssayAnalysis
-import org.transmart.biomart.Experiment
-import org.transmart.mongo.MongoUtils
 import grails.converters.JSON
 import grails.converters.XML
 import grails.validation.ValidationException
 import groovy.xml.StreamingMarkupBuilder
+import i2b2.OntNode
 import org.apache.commons.lang.StringUtils
+import org.slf4j.LoggerFactory
+import org.transmart.biomart.BioAssayAnalysis
+import org.transmart.biomart.BioAssayPlatform
+import org.transmart.biomart.Experiment
 import org.transmart.searchapp.AuthUser
 import org.transmart.searchapp.SearchKeyword
-import org.slf4j.LoggerFactory
-import i2b2.OntNode;
 
+import javax.activation.MimetypesFileTypeMap
 
 class FmFolderController {
 

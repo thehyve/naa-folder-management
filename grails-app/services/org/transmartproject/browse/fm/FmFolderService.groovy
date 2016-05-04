@@ -1,30 +1,15 @@
 package org.transmartproject.browse.fm
 
-import java.io.File;
-
 import annotation.*
-
 import com.recomdata.util.FolderType
-
 import grails.util.Holders
 import grails.validation.ValidationException
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.FilenameUtils
 import org.transmart.biomart.BioData
 import org.transmart.biomart.Experiment
 import org.transmart.searchapp.AccessLog
 import org.transmart.searchapp.AuthUser
-
-import org.apache.commons.io.FileUtils
-import org.apache.commons.io.FilenameUtils
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.InputStreamBody
-import groovyx.net.http.ContentType;
-import groovyx.net.http.HTTPBuilder;
-import groovyx.net.http.Method
-import com.mongodb.DB
-import com.mongodb.MongoClient;
-import com.mongodb.gridfs.GridFS;
-import com.mongodb.gridfs.GridFSDBFile
 
 class FmFolderService {
 
@@ -321,68 +306,13 @@ class FmFolderService {
      * @return
      */
     private void indexFile(FmFile fmFile) {
-
         try {
             facetsIndexingService.indexByIds([this.getClass()
                     .classLoader.loadClass('org.transmartproject.search.indexing.FacetsDocId')
                     .newInstance('FILE', fmFile.id)] as Set)
-
-            if (useMongo) {
-                if(config.transmartproject.mongoFiles.useDriver){
-                    MongoClient mongo = new MongoClient(config.transmartproject.mongoFiles.dbServer, config.transmartproject.mongoFiles.dbPort)
-                    DB db = mongo.getDB(config.transmartproject.mongoFiles.dbName)
-                    GridFS gfs = new GridFS(db)
-                    def http = new HTTPBuilder(url)
-                    GridFSDBFile gfsFile = gfs.findOne(fmFile.filestoreName)
-                    http.request(Method.POST) {request ->
-                        requestContentType: "multipart/form-data"
-                        MultipartEntity multiPartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
-                        multiPartContent.addPart(fmFile.filestoreName, new InputStreamBody(gfsFile.getInputStream(), "application/octet-stream", fmFile.originalName))
-                        request.setEntity(multiPartContent)
-                        response.success = { resp ->
-                            log.info("File successfully indexed: "+fmFile.id)
-                        }
-                        response.failure = { resp ->
-                            log.error("Problem to index file "+fmFile.id+": "+resp.status)
-                        }
-                    }
-                    mongo.close()
-                }else{
-                    def apiURL=config.transmartproject.mongoFiles.apiURL
-                    def apiKey=config.transmartproject.mongoFiles.apiKey
-                    def http = new HTTPBuilder(apiURL+fmFile.filestoreName+"/fsfile")
-                    url.append("&commit=true")
-                    http.request( Method.GET, ContentType.BINARY) { req ->
-                        headers.'apikey' = MongoUtils.hash(apiKey)
-                        response.success = { resp, binary ->
-                            assert resp.statusLine.statusCode == 200
-                            def inputStream=binary
-
-                            def http2 = new HTTPBuilder(url)
-                            http2.request(Method.POST) {request ->
-                                requestContentType: "multipart/form-data"
-                                MultipartEntity multiPartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
-                                multiPartContent.addPart(fmFile.filestoreName, new InputStreamBody(inputStream, "application/octet-stream", fmFile.originalName))
-                                request.setEntity(multiPartContent)
-                                response.success = { resp2 ->
-                                    log.info("File successfully indexed: "+fmFile.id)
-                                }
-
-                                response.failure = { resp2 ->
-                                    log.error("Problem to index file "+fmFile.id+": "+resp.status)
-                                }
-                            }
-                        }
-                        response.failure = { resp ->
-                            log.error("Problem during connection to API: "+resp.status)
-                        }
-                    }
-                }
-            }
         } catch (Exception ex) {
             log.error("Exception while indexing fmFile with id of " + fmFile.id, ex);
         }
-
     }
 
     /**
