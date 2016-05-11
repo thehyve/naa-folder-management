@@ -1,3 +1,4 @@
+.gitignore
 target/
 .buildpath
 .classpath
@@ -12,4 +13,5 @@ target/
 *.log
 System.out
 prodDb.*
-
+.svn
+target-eclipse/.gitignore
